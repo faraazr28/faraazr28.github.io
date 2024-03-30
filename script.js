@@ -58,10 +58,13 @@ function showYippeeCat(event) {
     // Optionally, if you want to hide the navbar as well
     document.querySelector('nav').style.display = 'none';
 
-    // Display the image
+    // Display the image container, which now includes the text
     document.getElementById('yesImageContainer').style.display = 'block';
-}
 
+    // Play the background music
+    var audio = document.getElementById('backgroundMusic');
+    audio.play();
+}
 
 
 
