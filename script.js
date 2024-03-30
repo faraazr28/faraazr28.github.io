@@ -51,12 +51,20 @@ const UPDATE = ({ target, x, y }) => {
 const BTNS = document.querySelectorAll("button");
 BTNS.forEach(BTN => BTN.addEventListener("pointermove", UPDATE));
 
-function showYippeeCat() {
-	var valentineContainer = document.getElementById("valentineContainer");
-	var buttons = document.querySelectorAll('.custom-btn');
-	valentineContainer.classList.add("answer--yes");
-	buttons.forEach(button => button.classList.add('hide-buttons'));
+function showYippeeCat(event) {
+    // Hide the container holding the text and buttons
+    document.querySelector('.container-class').style.display = 'none';
+    
+    // Optionally, if you want to hide the navbar as well
+    document.querySelector('nav').style.display = 'none';
+
+    // Display the image
+    document.getElementById('yesImageContainer').style.display = 'block';
 }
+
+
+
+
 
 //teleport button
 toggleButton.addEventListener("mouseover", changeButton);
