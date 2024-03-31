@@ -10,11 +10,8 @@ var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 let counter = 0;
 const messages = [
 	"You're gonna have to click yes eventually",
-	"Make this easier for both of us and click yes",
 	"Stop playing hard to get, I know you want me ",
 	"PLS PLS PLS PLS Click yes 🙏",
-	"You're making me want to go back to my ex",
-	"BRO PLS"
 ];
 
 // Function to toggle light and dark themes
