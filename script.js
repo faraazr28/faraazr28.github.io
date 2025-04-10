@@ -1,125 +1,100 @@
-const TOGGLE = document.querySelector('button');
+/* Grab elements */
 const themeSwitch = document.getElementById('themeSwitch');
 const root = document.documentElement;
 const toggleButton = document.getElementById('toggleButton');
 const yesButton = document.getElementById("yesButton");
-const yayHidden = document.getElementsByClassName("yayHidden");
 var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-
+/* Counters / messages for "No" clicks */
 let counter = 0;
 const messages = [
-	"You're gonna have to click yes eventually",
-	"Stop playing hard to get, I know you want me ",
-	"PLS PLS PLS PLS Click yes 🙏",
+  "You're gonna have to click yes eventually",
+  "Stop playing hard to get, I know you want me ",
+  "PLS PLS PLS PLS Click yes 🙏",
 ];
 
-// Function to toggle light and dark themes
+/* Toggle Themes */
 function toggleTheme() {
-	if (themeSwitch.checked) {
-		root.style.setProperty('--bg-color', '#FFE3EC'); // Light mode background color
-		root.style.setProperty('--text-color', '#e75480');  // Light mode text color
-		root.style.setProperty('--button-color', '#e75480');  // Light mode button text color
-		root.style.setProperty('--button-text', '#FFE3EC');  // Light mode button text color
-		if (themeSwitch.nextElementSibling) {
-			themeSwitch.nextElementSibling.textContent = 'Light Mode';
-		}
-	} else {
-		root.style.setProperty('--bg-color', '#e75480');  // Dark mode background color
-		root.style.setProperty('--text-color', '#FFE3EC'); // Dark mode text color
-		root.style.setProperty('--button-color', '#FFE3EC');  // Light mode button text color
-		root.style.setProperty('--button-text', '#e75480');  // Light mode button text color
-		if (themeSwitch.nextElementSibling) {
-			themeSwitch.nextElementSibling.textContent = 'Dark Mode';
-		}
-	}
+  if (themeSwitch.checked) {
+    // Light Mode
+    root.style.setProperty('--bg-color', '#FFE3EC');   // Light background
+    root.style.setProperty('--text-color', '#e75480'); // Light text
+    root.style.setProperty('--button-color', '#e75480');
+    root.style.setProperty('--button-text', '#FFE3EC');
+  } else {
+    // Dark Mode
+    root.style.setProperty('--bg-color', '#e75480');   // Dark background
+    root.style.setProperty('--text-color', '#FFE3EC'); // Dark text
+    root.style.setProperty('--button-color', '#FFE3EC');
+    root.style.setProperty('--button-text', '#e75480');
+  }
 }
-
 themeSwitch.addEventListener('change', toggleTheme);
 
+/* Optionally load saved theme from localStorage */
 const savedTheme = localStorage.getItem('theme') || 'light';
 if (savedTheme === 'dark') {
-	themeSwitch.checked = true;
-	toggleTheme();
+  themeSwitch.checked = false; // if you prefer "false" for dark
+  toggleTheme();
 }
 
-//preloader
+/* Preloader */
 var loader = document.getElementById("preloader");
-		window.addEventListener("load", function() {
-			loader.style.display = "none";
-			document.body.style.overflow = "auto";
-})
+window.addEventListener("load", function() {
+  loader.style.display = "none";
+  document.body.style.overflow = "auto";
+});
 
-//buttons
+/* Animations for the button (hover effect) */
 const UPDATE = ({ target, x, y }) => {
-	const bounds = target.getBoundingClientRect();
-	target.style.setProperty("--x", x - bounds.left);
-	target.style.setProperty("--y", y - bounds.top);
+  const bounds = target.getBoundingClientRect();
+  target.style.setProperty("--x", x - bounds.left);
+  target.style.setProperty("--y", y - bounds.top);
 };
-
 const BTNS = document.querySelectorAll("button");
 BTNS.forEach(BTN => BTN.addEventListener("pointermove", UPDATE));
 
-function showYippeeCat(event) {
-    // Hide the container holding the text and buttons
-    document.querySelector('.container-class').style.display = 'none';
-    
-    // Optionally, if you want to hide the navbar as well
-    document.querySelector('nav').style.display = 'none';
+/* "Yes" button click => show special container & play music */
+function showYippeeCat() {
+  // Hide the main container
+  document.querySelector('.container-class').style.display = 'none';
+  // Hide the navbar if desired
+  document.querySelector('nav').style.display = 'none';
 
-    // Display the image container, which now includes the text
-    document.getElementById('yesImageContainer').style.display = 'block';
+  // Show the "Yes" image container
+  document.getElementById('yesImageContainer').style.display = 'block';
 
-    // Play the background music
-    var audio = document.getElementById('backgroundMusic');
-    audio.play();
+  // Play background music
+  var audio = document.getElementById('backgroundMusic');
+  audio.play();
 }
 
+/* "No" button runs away */
+if (/android/i.test(userAgent) || (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)) {
+  // On mobile, run away when clicked
+  toggleButton.addEventListener("click", changeButton);
+} else {
+  // On desktop, run away on mouseover
+  toggleButton.addEventListener("mouseover", changeButton);
+}
 
-var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-if (/android/i.test(userAgent) || /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-	toggleButton.addEventListener("click", changeButton);
-	function changeButton()
-	{
-		yesButton.classList.add("move-left");
-		const windowWidth = window.innerWidth - 170;
-		const windowHeight = window.innerHeight - 170;
-		var i = Math.floor(Math.random() * windowWidth);
-		var j = Math.floor(Math.random() * windowHeight);
-		toggleButton.style.position = 'absolute';
-		toggleButton.style.left = i+"px";
-		toggleButton.style.top = j+"px";
-		counter++;
-	
-		if (counter == 3) {
-			const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-			alert(randomMessage)
-			counter = 0;
-		}
-	
-	
-	}} else {
-		toggleButton.addEventListener("mouseover", changeButton);
-		function changeButton()
-		{
-			yesButton.classList.add("move-left");
-			const windowWidth = window.innerWidth - 170;
-			const windowHeight = window.innerHeight - 170;
-			var i = Math.floor(Math.random() * windowWidth);
-			var j = Math.floor(Math.random() * windowHeight);
-			toggleButton.style.position = 'absolute';
-			toggleButton.style.left = i+"px";
-			toggleButton.style.top = j+"px";
-			counter++;
-		
-			if (counter == 3) {
-				const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-				alert(randomMessage)
-				counter = 0;
-			}
-		
-		
-		}}
+function changeButton() {
+  yesButton.classList.add("move-left");
+  // Keep the button fully visible by subtracting the button’s dimensions
+  const windowWidth = window.innerWidth - toggleButton.offsetWidth;
+  const windowHeight = window.innerHeight - toggleButton.offsetHeight;
+  
+  const i = Math.floor(Math.random() * windowWidth);
+  const j = Math.floor(Math.random() * windowHeight);
 
+  toggleButton.style.position = 'absolute';
+  toggleButton.style.left = i + "px";
+  toggleButton.style.top = j + "px";
 
-//teleport button
+  counter++;
+  if (counter === 3) {
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    alert(randomMessage);
+    counter = 0;
+  }
+}
